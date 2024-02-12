@@ -7,6 +7,9 @@ namespace BuilderDefender
 {
     public class EnemyWaveManager : MonoBehaviour
     {
+
+        public static EnemyWaveManager instance { get; private set; }
+
         public event EventHandler OnWaveNumberChange;
         private enum State
         {
@@ -21,6 +24,15 @@ namespace BuilderDefender
         private float nextEnemySpawnTimer;
         private int remainingEnemySpawnAmount;
         private Vector3 spawnPosition;
+
+        private void Awake()
+        {
+            if (instance == null)
+                instance = this;
+            else
+                Destroy(gameObject);
+        }
+
         private void Start()
         {
             state = State.WaitingToSpawnNextWave;
@@ -56,7 +68,7 @@ namespace BuilderDefender
                                 state = State.WaitingToSpawnNextWave;
                                 spawnPosition = spawnPositionTransformList[UnityEngine.Random.Range(0, spawnPositionTransformList.Count)].position;
                                 nextWaveSpawnPositionTransform.position = spawnPosition;
-                                nextWaveSpawnTimer = 10f;
+                                nextWaveSpawnTimer = 15f;
                             }
                         }
                     }

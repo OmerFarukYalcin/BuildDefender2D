@@ -21,9 +21,9 @@ MonoBehaviour:
     maxResouceAmount: 7
   sprite: {fileID: 21300000, guid: 793ca27a5a3378149aaa12abe85933f4, type: 3}
   hasResourceGeneratorData: 1
-  minConstructionRadius: 7
+  minConstructionRadius: 10
   constructionResouceCostArray:
   - resourceType: {fileID: 11400000, guid: 128d610ed0f990f4ab1a2e669a0529cb, type: 2}
-    amount: 10
+    amount: 30
   healtAmountMax: 100
-  constructionTimerMax: 5
+  constructionTimerMax: 7

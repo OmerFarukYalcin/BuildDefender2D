@@ -7,8 +7,10 @@ namespace BuilderDefender
 {
     public class HealthSystem : MonoBehaviour
     {
+        public event EventHandler OnHealtAmountMaxChanged;
         public event EventHandler OnDamage;
         public event EventHandler OnDied;
+        public event EventHandler OnHealed;
 
         [SerializeField] private int healtAmountMax;
         private int healtAmount;
@@ -30,6 +32,22 @@ namespace BuilderDefender
             }
         }
 
+        public void Heal(int healAmount)
+        {
+            healtAmount += healAmount;
+
+            healtAmount = Mathf.Clamp(healtAmount, 0, healtAmountMax);
+
+            OnHealed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void HealFull()
+        {
+            healtAmount = healtAmountMax;
+
+            OnHealed?.Invoke(this, EventArgs.Empty);
+        }
+
         public bool IsDead()
         {
             return healtAmount == 0;
@@ -45,6 +63,11 @@ namespace BuilderDefender
             return healtAmount;
         }
 
+        public int GetHealtAmountMax()
+        {
+            return healtAmountMax;
+        }
+
         public float GetHealtAmountNormalized()
         {
             return (float)healtAmount / healtAmountMax;
@@ -58,6 +81,8 @@ namespace BuilderDefender
             {
                 healtAmount = healtAmountMax;
             }
+
+            OnHealtAmountMaxChanged?.Invoke(this, EventArgs.Empty);
         }
 
     }

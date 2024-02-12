@@ -28,6 +28,8 @@ namespace BuilderDefender
             spriteRenderer = transform.Find("sprite").GetComponent<SpriteRenderer>();
             buildingTypeHolder = GetComponent<BuildingTypeHolder>();
             constructionMaterial = spriteRenderer.material;
+
+            Instantiate(Resources.Load<Transform>("pfBuildingPlacedParticles"), transform.position, Quaternion.identity);
         }
 
         void Update()
@@ -39,6 +41,8 @@ namespace BuilderDefender
             {
                 print("ding!");
                 Instantiate(buildingType.prefab, transform.position, Quaternion.identity);
+                Instantiate(Resources.Load<Transform>("pfBuildingPlacedParticles"), transform.position, Quaternion.identity);
+                SoundManager.instance.PlaySound(SoundManager.Sound.BuildingPlaced);
                 Destroy(gameObject);
             }
         }

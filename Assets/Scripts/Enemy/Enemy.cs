@@ -21,11 +21,20 @@ namespace BuilderDefender
         private HealthSystem healthSystem;
         void Start()
         {
-            targetTransform = BuildingManager.instance.GetHQBuilding().transform;
+            if (BuildingManager.instance.GetHQBuilding() != null)
+                targetTransform = BuildingManager.instance.GetHQBuilding().transform;
             rb2d = GetComponent<Rigidbody2D>();
             healthSystem = GetComponent<HealthSystem>();
             healthSystem.OnDied += HandleOnDied;
+            healthSystem.OnDamage += HandleOnDamage;
             lookForTargetTimer = Random.Range(0f, lookForTargetTimerMax);
+        }
+
+        private void HandleOnDamage(object sender, System.EventArgs e)
+        {
+            SoundManager.instance.PlaySound(SoundManager.Sound.EnemyHit);
+            CinemachineShake.instance.ShakeCamera(2f, .1f);
+            ChromaticAberration.instance.SetWeight(.5f);
         }
 
         void Update()
@@ -35,19 +44,16 @@ namespace BuilderDefender
             HandleTargeting();
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            Building building = other.gameObject.GetComponent<Building>();
-            if (building != null)
-            {
-                HealthSystem healthSystem = building.GetComponent<HealthSystem>();
-                healthSystem.Damage(10);
-                Destroy(gameObject);
-            }
-        }
-
         private void HandleOnDied(object sender, System.EventArgs e)
         {
+            SoundManager.instance.PlaySound(SoundManager.Sound.EnemyDie);
+
+            CinemachineShake.instance.ShakeCamera(4f, .15f);
+
+            Instantiate(Resources.Load<Transform>("pfEnemyDieParticles"), transform.position, Quaternion.identity);
+
+            ChromaticAberration.instance.SetWeight(.5f);
+
             Destroy(gameObject);
         }
 
@@ -96,7 +102,21 @@ namespace BuilderDefender
 
             if (targetTransform == null)
             {
-                targetTransform = BuildingManager.instance.GetHQBuilding().transform;
+                if (BuildingManager.instance.GetHQBuilding() != null)
+                {
+                    targetTransform = BuildingManager.instance.GetHQBuilding().transform;
+                }
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            Building building = other.gameObject.GetComponent<Building>();
+            if (building != null)
+            {
+                HealthSystem healthSystem = building.GetComponent<HealthSystem>();
+                healthSystem.Damage(10);
+                this.healthSystem.Damage(999);
             }
         }
     }

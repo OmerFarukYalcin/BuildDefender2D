@@ -32,6 +32,14 @@ namespace BuilderDefender
         void Start()
         {
             mainCamera = Camera.main;
+
+            hqBuilding.GetComponent<HealthSystem>().OnDied += HandleOnHqDied;
+        }
+
+        private void HandleOnHqDied(object sender, EventArgs e)
+        {
+            SoundManager.instance.PlaySound(SoundManager.Sound.GameOver);
+            GameOverUI.instance.Show();
         }
 
         void Update()
@@ -45,6 +53,7 @@ namespace BuilderDefender
                         if (ResourceManager.instance.CanAfford(activeBuildingType.constructionResouceCostArray))
                         {
                             ResourceManager.instance.SpendResources(activeBuildingType.constructionResouceCostArray);
+                            SoundManager.instance.PlaySound(SoundManager.Sound.BuildingPlaced);
                             BuildingConstruction.Create(UtilsClass.GetMouseWorldPosition(), activeBuildingType);
                             // Instantiate(activeBuildingType.prefab, UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
                         }
