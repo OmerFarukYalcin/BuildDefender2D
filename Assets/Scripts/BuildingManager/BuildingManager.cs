@@ -106,6 +106,18 @@ namespace BuilderDefender
                     }
                 }
             }
+            if (buildingType.hasResourceGeneratorData)
+            {
+                ResourceGeneratorData resourceGeneratorData = buildingType.resourceGeneratorData;
+
+                int nearbyResourceAmount = ResourceGenerator.GetNearbyResourceAmunt(resourceGeneratorData, position);
+
+                if (nearbyResourceAmount == 0)
+                {
+                    errorMessage = "There are no nearby Resource Nodes!";
+                    return false;
+                }
+            }
 
             float maxConstructionRadius = 25f;
             collider2Ds = Physics2D.OverlapCircleAll(position, maxConstructionRadius);

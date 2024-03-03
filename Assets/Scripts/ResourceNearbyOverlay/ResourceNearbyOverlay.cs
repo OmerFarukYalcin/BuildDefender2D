@@ -16,7 +16,7 @@ namespace BuilderDefender
 
         private void Update()
         {
-            int nearbyResourceAmount = ResourceGenerator.GetNearbyResourceAmunt(resourceGeneratorData, transform.position);
+            int nearbyResourceAmount = ResourceGenerator.GetNearbyResourceAmunt(resourceGeneratorData, transform.position - transform.localPosition);
 
             float percent = Mathf.Round((float)nearbyResourceAmount / resourceGeneratorData.maxResouceAmount * 100f);
 
