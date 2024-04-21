@@ -5125,11 +5125,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingResourceAmountList:
   - resourceType: {fileID: 11400000, guid: decf304f625dbd849b9653437693aa9b, type: 2}
-    amount: 0
+    amount: 50
   - resourceType: {fileID: 11400000, guid: f6be852ab9166ae43b687de114317413, type: 2}
-    amount: 0
+    amount: 50
   - resourceType: {fileID: 11400000, guid: 128d610ed0f990f4ab1a2e669a0529cb, type: 2}
-    amount: 20
+    amount: 50
 --- !u!4 &464403728
 Transform:
   m_ObjectHideFlags: 0
@@ -20287,6 +20287,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
+  secondsPerDay: 10
 --- !u!1001 &1899587523
 PrefabInstance:
   m_ObjectHideFlags: 0
