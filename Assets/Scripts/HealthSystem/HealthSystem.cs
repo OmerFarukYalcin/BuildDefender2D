@@ -1,89 +1,109 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BuilderDefender
 {
     public class HealthSystem : MonoBehaviour
     {
-        public event EventHandler OnHealtAmountMaxChanged;
-        public event EventHandler OnDamage;
-        public event EventHandler OnDied;
-        public event EventHandler OnHealed;
+        // Events for various health-related actions
+        public event EventHandler OnHealthAmountMaxChanged;  // Fired when max health changes
+        public event EventHandler OnDamage;  // Fired when damage is taken
+        public event EventHandler OnDied;    // Fired when the entity dies
+        public event EventHandler OnHealed;  // Fired when healing occurs
 
-        [SerializeField] private int healtAmountMax;
-        private int healtAmount;
-        void Awake()
+        // Serialized field to set max health in the Unity editor
+        [SerializeField] private int healthAmountMax;
+
+        // Current health amount
+        private int healthAmount;
+
+        private void Awake()
         {
-            healtAmount = healtAmountMax;
+            // Initialize current health to the maximum value at the start
+            healthAmount = healthAmountMax;
         }
 
+        // Method to apply damage to the health system
         public void Damage(int damageAmount)
         {
-            healtAmount -= damageAmount;
-            healtAmount = Mathf.Clamp(healtAmount, 0, healtAmountMax);
+            // Reduce health by the damage amount, ensuring it doesn't go below 0
+            healthAmount -= damageAmount;
+            healthAmount = Mathf.Clamp(healthAmount, 0, healthAmountMax);
 
+            // Trigger the OnDamage event
             OnDamage?.Invoke(this, EventArgs.Empty);
 
+            // Check if the entity is dead, and trigger the OnDied event if necessary
             if (IsDead())
             {
                 OnDied?.Invoke(this, EventArgs.Empty);
             }
         }
 
+        // Method to heal the entity by a specified amount
         public void Heal(int healAmount)
         {
-            healtAmount += healAmount;
+            // Increase health by the healing amount, ensuring it doesn't exceed max health
+            healthAmount += healAmount;
+            healthAmount = Mathf.Clamp(healthAmount, 0, healthAmountMax);
 
-            healtAmount = Mathf.Clamp(healtAmount, 0, healtAmountMax);
-
+            // Trigger the OnHealed event
             OnHealed?.Invoke(this, EventArgs.Empty);
         }
 
+        // Method to fully heal the entity
         public void HealFull()
         {
-            healtAmount = healtAmountMax;
+            // Set current health to the maximum health
+            healthAmount = healthAmountMax;
 
+            // Trigger the OnHealed event
             OnHealed?.Invoke(this, EventArgs.Empty);
         }
 
+        // Method to check if the entity is dead (health reaches 0)
         public bool IsDead()
         {
-            return healtAmount == 0;
+            return healthAmount == 0;
         }
 
-        public bool IsFullHealt()
+        // Method to check if the entity is at full health
+        public bool IsFullHealth()
         {
-            return healtAmount == healtAmountMax;
+            return healthAmount == healthAmountMax;
         }
 
-        public int GetHealtAmount()
+        // Getter for the current health amount
+        public int GetHealthAmount()
         {
-            return healtAmount;
+            return healthAmount;
         }
 
-        public int GetHealtAmountMax()
+        // Getter for the maximum health amount
+        public int GetHealthAmountMax()
         {
-            return healtAmountMax;
+            return healthAmountMax;
         }
 
-        public float GetHealtAmountNormalized()
+        // Returns the current health as a normalized value (0 to 1 range)
+        public float GetHealthAmountNormalized()
         {
-            return (float)healtAmount / healtAmountMax;
+            return (float)healthAmount / healthAmountMax;
         }
 
-        public void SetHealtAmountMax(int _healtAmountMax, bool updateHealtAmount)
+        // Method to set the maximum health and optionally update the current health to match
+        public void SetHealthAmountMax(int newHealthAmountMax, bool updateHealthAmount)
         {
-            healtAmountMax = _healtAmountMax;
+            healthAmountMax = newHealthAmountMax;
 
-            if (updateHealtAmount)
+            // If true, also set current health to the new maximum
+            if (updateHealthAmount)
             {
-                healtAmount = healtAmountMax;
+                healthAmount = healthAmountMax;
             }
 
-            OnHealtAmountMaxChanged?.Invoke(this, EventArgs.Empty);
+            // Trigger the OnHealthAmountMaxChanged event
+            OnHealthAmountMaxChanged?.Invoke(this, EventArgs.Empty);
         }
-
     }
 }

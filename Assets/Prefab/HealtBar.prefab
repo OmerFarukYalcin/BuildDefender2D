@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5629070983903432176}
   m_Layer: 0
-  m_Name: seperatorContainer
+  m_Name: separatorContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8072158095416378517}
   - component: {fileID: 7292781666106919267}
   m_Layer: 0
-  m_Name: seperatorTemplate
+  m_Name: separatorTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
